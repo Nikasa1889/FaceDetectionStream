@@ -1,0 +1,43 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+cap	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^cap = cv2.VideoCapture('\/root\/openface\/demos\/video\/in.mp4')$/;"	v	language:Python
+cv2	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^import cv2$/;"	i	language:Python
+cv2	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^import cv2$/;"	i	language:Python
+dimension	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^dimension = '{}x{}'.format(WIDTH, HEIGHT)$/;"	v	language:Python
+dlibModelDir	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^dlibModelDir = os.path.join(modelDir, 'dlib')$/;"	v	language:Python
+drawBox	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^    def drawBox(self, rgbImg, bb, person, confidence):$/;"	m	language:Python	class:FaceDetection
+drawBoxes	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^    def drawBoxes (self, rgbImg, reps, persons, confidences):$/;"	m	language:Python	class:FaceDetection
+FaceDetection	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^class FaceDetection():$/;"	c	language:Python
+faceDetection	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^faceDetection = FaceDetection()$/;"	v	language:Python
+FaceDetection	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^from FaceDetection import FaceDetection$/;"	i	language:Python
+ffmpeg	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^ffmpeg = 'ffmpeg'$/;"	v	language:Python
+FFMPEG_COMMAND	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^FFMPEG_COMMAND = ' '.join(FFMPEG_COMMAND)$/;"	v	language:Python
+FFMPEG_COMMAND	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^FFMPEG_COMMAND =[ffmpeg,$/;"	v	language:Python
+FFMPEG_PROC	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^FFMPEG_PROC = None;$/;"	v	language:Python
+FFMPEG_PROC	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^FFMPEG_PROC = sp.Popen(FFMPEG_COMMAND, stdin=sp.PIPE, $/;"	v	language:Python
+fileDir	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^fileDir = os.path.dirname(os.path.realpath(__file__))$/;"	v	language:Python
+FPS	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^FPS = 30;$/;"	v	language:Python
+fps	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^fps = str(FPS);$/;"	v	language:Python
+frames	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^    frames =  []$/;"	v	language:Python
+frame_rgb	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)$/;"	v	language:Python
+frame_rgb	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^            frame_rgb = faceDetection.infer(frame_rgb)$/;"	v	language:Python
+f_format	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^f_format = 'bgr24' #OpenCV bgr format, tested rbg24 without success$/;"	v	language:Python
+getRep	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^    def getRep(self, rgbImg, multiple=True):$/;"	m	language:Python	class:FaceDetection
+HEIGHT	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^HEIGHT = 360;$/;"	v	language:Python
+infer	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^    def infer(self, rgbImg, multiple=True):$/;"	m	language:Python	class:FaceDetection
+interpolation	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^                    interpolation = cv2.INTER_CUBIC )$/;"	v	language:Python
+math	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^import math$/;"	i	language:Python
+modelDir	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^modelDir = os.path.join(fileDir, '..','..', 'models')$/;"	v	language:Python
+np	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^import numpy as np$/;"	i	language:Python
+openface	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^import openface$/;"	i	language:Python
+openfaceModelDir	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^openfaceModelDir = os.path.join(modelDir, 'openface')$/;"	v	language:Python
+os	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^import os$/;"	i	language:Python
+output_file	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^output_file = "out.mp4"$/;"	v	language:Python
+pd	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^import pandas as pd$/;"	i	language:Python
+pickle	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^import pickle$/;"	i	language:Python
+result	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^            result = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)$/;"	v	language:Python
+result	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^            result = cv2.resize(result, (WIDTH, HEIGHT), $/;"	v	language:Python
+sp	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^import subprocess as sp$/;"	i	language:Python
+sys	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^import sys$/;"	i	language:Python
+time	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^import time$/;"	i	language:Python
+WIDTH	/home/nikasa/Docker/openface/demos/video/runVideoDetection.py	/^WIDTH = 640;$/;"	v	language:Python
+__init__	/home/nikasa/Docker/openface/demos/video/FaceDetection.py	/^    def __init__(self, $/;"	m	language:Python	class:FaceDetection
