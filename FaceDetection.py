@@ -57,6 +57,7 @@ class FaceDetection():
 
     def getReps(self, rgbImg, bbs, multiple=True):
         net = self.net
+        align = self.align
         if len(bbs) == 0 or (not multiple and bb1 is None):
             print("No face")
             return []
@@ -64,11 +65,8 @@ class FaceDetection():
             reps = []
             for bb in bbs:
                 start = time.time()
-                alignedFace = align.align(
-                    self.imgDim,
-                    rgbImg,
-                    bb,
-                    landmarkIndices=openface.AlignDlib.OUTER_EYES_AND_NOSE)
+                alignedFace = align.align( self.imgDim, rgbImg, bb,
+                            landmarkIndices=openface.AlignDlib.OUTER_EYES_AND_NOSE)
                 if alignedFace is None:
                     print("Unable to align a face image")
                     continue;
