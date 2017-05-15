@@ -43,11 +43,12 @@ class FaceDetector(mpipe.OrderedWorker):
     """
 
     def doInit(self):
-        self.faceDetection = FaceDetection(cuda=True)
+        self.faceDetection = FaceDetection(cuda=True, verbose=False)
 
     def doTask(self, rgbImg):
+        start = time.time()
         bbs = self.faceDetection.getFaceBBs(rgbImg, multiple=True)
-        print("Stage 0: detecting face")
+        print("Stage 0: detecting faces - {} seconds".format(time.time()-start))
         return (rgbImg, bbs)
 
 class FaceRecognizer(mpipe.OrderedWorker):
@@ -56,7 +57,7 @@ class FaceRecognizer(mpipe.OrderedWorker):
     """
     
     def doInit(self):
-        self.faceDetection = FaceDetection(cuda=True)
+        self.faceDetection = FaceDetection(cuda=True, verbose=False)
         with open(self.faceDetection.classifierModel, 'rb') as f:
             if sys.version_info[0] < 3:
                 (le, clf) = pickle.load(f)
@@ -65,7 +66,7 @@ class FaceRecognizer(mpipe.OrderedWorker):
         self.clf = clf
         self.le = le
     def doTask(self, params):
-        print("Stage 1: recognizing faces")
+        stageStart = time.time()
         rgbImg = params[0]
         bbs = params[1]
         reps = self.faceDetection.getReps(rgbImg, bbs, multiple=True)
@@ -85,6 +86,7 @@ class FaceRecognizer(mpipe.OrderedWorker):
             print("Prediction took {} seconds.".format(time.time() - start))
         annotatedImg = self.faceDetection.drawBoxes(
                 rgbImg, reps, persons, confidences)
+        print("Stage 1: rocognizing faces - {} seconds".format(time.time()-stageStart))
         return (rgbImg, annotatedImg, bbs, persons, confidences)
 
 class PipelineOutput(mpipe.OrderedWorker):
@@ -95,7 +97,7 @@ class PipelineOutput(mpipe.OrderedWorker):
             stdout=sp.PIPE, shell=True)
 
     def doTask(self, params):
-        print("Stage 2: outputing stream")
+        start = time.time()
         global WIDTH, HEIGHT
         rgbImg = params[0]
         annotatedImg = params[1]
@@ -108,11 +110,13 @@ class PipelineOutput(mpipe.OrderedWorker):
                     interpolation = cv2.INTER_CUBIC )
         
         self.FFMPEG_PROC.stdin.write(bgrResult.tostring())
+        
+        print("Stage 2: outputing stream - {} seconds".format(time.time()-start))
         return None
 
 class FaceRecognitionPipeline:
     def __init__(self):
-        stage0 = mpipe.Stage(FaceDetector, 2)
+        stage0 = mpipe.Stage(FaceDetector, 3)
         stage1 = mpipe.Stage(FaceRecognizer, 1)
         stage2 = mpipe.Stage(PipelineOutput, 1)
         stage0.link(stage1)
