@@ -55,7 +55,7 @@ class FaceDetection():
             print("Face detection took {} seconds.".format(time.time() - start))
         return bbs
 
-    def getRep(self, rgbImg, bbs, multiple=True):
+    def getReps(self, rgbImg, bbs, multiple=True):
         net = self.net
         if len(bbs) == 0 or (not multiple and bb1 is None):
             print("No face")
@@ -124,7 +124,7 @@ class FaceDetection():
         print("====================================")
 
         bbs = self.getFaceBBs(rgbImg, multiple)
-        reps = self.getRep(rgbImg, bbs, multiple)
+        reps = self.getReps(rgbImg, bbs, multiple)
         if len(reps) > 1:
             print("List of faces in image from left to right")
         persons = []
