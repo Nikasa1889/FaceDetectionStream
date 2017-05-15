@@ -41,22 +41,27 @@ class FaceDetection():
         self.align = openface.AlignDlib(self.dlibFacePredictor)
         self.net = openface.TorchNeuralNet(self.networkModel, imgDim=self.imgDim,
                                                   cuda=self.cuda)
-    def getRep(self, rgbImg, multiple=True):
+
+
+    def getFaceBBs(self, rgbImg, multiple=True):
         start = time.time()
         align = self.align
-        net = self.net
         if multiple:
             bbs = align.getAllFaceBoundingBoxes(rgbImg)
         else:
             bb1 = align.getLargestFaceBoundingBox(rgbImg)
             bbs = [bb1]
+        if self.verbose:
+            print("Face detection took {} seconds.".format(time.time() - start))
+        return bbs
+
+    def getRep(self, rgbImg, multiple=True):
+        net = self.net
+        bbs = self.getFaceBBs(self, rgbImg, multiple=True)
         if len(bbs) == 0 or (not multiple and bb1 is None):
             print("No face")
             return []
         else:
-            if self.verbose:
-                print("Face detection took {} seconds.".format(time.time() - start))
-    
             reps = []
             for bb in bbs:
                 start = time.time()
