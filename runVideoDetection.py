@@ -13,9 +13,10 @@ FPS = 30;
 #Format the video output
 ffmpeg = 'ffmpeg'
 dimension = '{}x{}'.format(WIDTH, HEIGHT)
-f_format = 'bgr24' #OpenCV bgr format, tested rbg24 without success
+f_format = 'bgr24' #OpenCV bgr format, tested rgb24 without success
 #f_format = 'rgb24'
 fps = str(FPS);
+output_file = "out.mp4"
 FFMPEG_COMMAND =[ffmpeg,
                 '-y',
                 '-f', 'rawvideo',
@@ -29,8 +30,6 @@ FFMPEG_COMMAND =[ffmpeg,
                 '-b:v', '5000k',
                 output_file ] 
 
-output_file = "out.mp4"
-
 #Define different worker for mpipe
 class FaceDetector(mpipe.OrderedWorker):
     """
@@ -38,11 +37,12 @@ class FaceDetector(mpipe.OrderedWorker):
     """
 
     def doInit(self):
-        self.faceDetection = FaceDetection()
+        self.faceDetection = FaceDetection(cuda=False)
 
     def doTask(self, params):
         rgbImg = params[0]
         bbs = self.faceDetection.getFaceBBs(rgbImg, multiple=True)
+        print("Stage 0: detecting face")
         return (rgbImg, bbs)
 
 class FaceRecognizer(mpipe.OrderedWorker):
@@ -51,9 +51,10 @@ class FaceRecognizer(mpipe.OrderedWorker):
     """
     
     def doInit(self):
-        self.faceDetection = FaceDetection()
+        self.faceDetection = FaceDetection(cuda=True)
     
     def doTask(self, params):
+        print("Stage 1: recognizing faces")
         rgbImg = params[0]
         bbs = params[1]
         reps = self.faceDetection.getReps(rgbImg, bbs, multiple=True)
@@ -79,17 +80,20 @@ class FaceRecognizer(mpipe.OrderedWorker):
             else:
                 print("Predict {} with {:.2f} confidence.".format(person.decode('utf-8'), confidence))
             
-        annotatedImg = self.drawBoxes(rgbImg, reps, persons, confidences)
-        return (rbgImg, annotatedImg, bbs, persons, confidences)
+        annotatedImg = self.faceDetection.drawBoxes(
+                rgbImg, reps, persons, confidences)
+        return (rgbImg, annotatedImg, bbs, persons, confidences)
 
 class PipelineOutput(mpipe.OrderedWorker):
     def doInit(self):
-        FFMPEG_COMMAND = ' '.join(FFMPEG_COMMAND)
-        self.FFMPEG_PROC = sp.Popen(FFMPEG_COMMAND, stdin=sp.PIPE, 
+        global FFMPEG_COMMAND
+        self.FFMPEG_COMMAND = ' '.join(FFMPEG_COMMAND)
+        self.FFMPEG_PROC = sp.Popen(self.FFMPEG_COMMAND, stdin=sp.PIPE, 
             stdout=sp.PIPE, shell=True)
 
     def doTask(self, params):
-        rbgImg = params[0]
+        print("Stage 2: outputing stream")
+        rgbImg = params[0]
         annotatedImg = params[1]
         bbs = params[2]
         persons = params[3]
@@ -109,22 +113,22 @@ class FaceRecognitionPipeline:
         stage0.link(stage1)
         stage1.link(stage2)
         self.pipe = mpipe.Pipeline(stage0)
-    def put(self, rbgImg):
-        self.pipe.put(rbgImg)
+
+    def put(self, rgbImg):
+        print("-------New Image------")
+        self.pipe.put(rgbImg)
 
     def stop(self):
         self.pipe.put(None)
-
 faceRecognitionPipeline = FaceRecognitionPipeline()
-
-cap = cv2.VideoCapture('/root/openface/demos/video/in.mp4')
+cap = cv2.VideoCapture('/root/openface/demos/stream/in.mp4')
 if(cap.isOpened()):
     for i in range(1,500):
         ret, frame = cap.read()
         if ret:
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             #Put to the pipeline for detection
-            faceRecognitionPipeline.put(frame_rgb) 
+            faceRecognitionPipeline.put(frame_rgb)
         else:
             break
 cap.release()
