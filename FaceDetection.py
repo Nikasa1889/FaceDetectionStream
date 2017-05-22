@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import openface
 import time
+import dlib
 
 fileDir = os.path.dirname(os.path.realpath(__file__))
 modelDir = os.path.join(fileDir, '..','..', 'models')
@@ -106,9 +107,14 @@ class FaceDetection():
                 )
         return rgbImg
 
-    def drawBoxes (self, rgbImg, reps, persons, confidences):
+    def drawBoxes (self, rgbImg, reps, persons, confidences, DOWNSAMPLED_RATIO = 1):
         for r, person, confidence in zip(reps, persons, confidences):
             bb = r[0]
+            bb = dlib.rectangle(
+                    left=int(bb.left()*DOWNSAMPLED_RATIO), 
+                    top=int(bb.top()*DOWNSAMPLED_RATIO), 
+                    right=int(bb.right()*DOWNSAMPLED_RATIO), 
+                    bottom=int(bb.bottom()*DOWNSAMPLED_RATIO))
             rgbImg = self.drawBox(rgbImg, bb, person, confidence)
         return rgbImg
 
@@ -146,5 +152,5 @@ class FaceDetection():
             else:
                 print("Predict {} with {:.2f} confidence.".format(person.decode('utf-8'), confidence))
             
-        return (self.drawBoxes(rgbImg, reps, persons, confidences))
-    
+        #return (self.drawBoxes(rgbImg, reps, persons, confidences))
+        return (reps, persons, confidences)
