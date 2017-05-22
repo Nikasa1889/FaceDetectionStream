@@ -2,9 +2,14 @@ import subprocess as sp
 import cv2
 import math
 from FaceDetection import FaceDetection
+import dlib
 #Info for face detection
 SKIP_FRAMES = 3
 DOWNSAMPLE_RATIO = 1.0
+CROP_X = 360 
+CROP_Y = 0
+CROP_WIDTH = 700
+CROP_HEIGHT = 700
 #Info for streaming using ffmpeg
 FFMPEG_PROC = None;
 WIDTH = 1280;
@@ -46,17 +51,28 @@ if(cap.isOpened()):
     reps = []
     persons = []
     confidences = []
-    for i in range(1,10000):
+    for i in range(1,2000):
         ret, frame = cap.read()
         if ret:
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             #Scale to smaller image
-            frame_small = cv2.resize(frame_rgb, (0, 0), fx=1/DOWNSAMPLE_RATIO, fy=1/DOWNSAMPLE_RATIO)
-            
+            #frame_small = cv2.resize(frame_rgb, (0, 0), fx=1/DOWNSAMPLE_RATIO, fy=1/DOWNSAMPLE_RATIO)
+            frame_small = frame_rgb
+            frame_small = frame_small[CROP_Y:(CROP_Y+CROP_HEIGHT), CROP_X:(CROP_X+CROP_WIDTH)].copy() 
             #Detection here
             if (count % SKIP_FRAMES == 0):
                (reps, persons, confidences) = faceDetection.infer(frame_small)
-            frame_rgb = faceDetection.drawBoxes(frame_rgb, reps, persons, confidences, DOWNSAMPLE_RATIO)      
+            adjustedReps = []
+            for rep in reps:
+                bb = rep[0]
+                rep = rep[1]
+                bb = dlib.rectangle(
+                        left=int((bb.left()+CROP_X)*DOWNSAMPLE_RATIO),
+                        top=int((bb.top()+CROP_Y)*DOWNSAMPLE_RATIO),
+                        right=int((bb.right()+CROP_X)*DOWNSAMPLE_RATIO),
+                        bottom=int((bb.bottom()+CROP_Y)*DOWNSAMPLE_RATIO))
+                adjustedReps.append((bb, rep))
+            frame_rgb = faceDetection.drawBoxes(frame_rgb, adjustedReps, persons, confidences)      
             
             #Output
             result = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)

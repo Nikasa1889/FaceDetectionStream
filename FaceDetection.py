@@ -107,14 +107,9 @@ class FaceDetection():
                 )
         return rgbImg
 
-    def drawBoxes (self, rgbImg, reps, persons, confidences, DOWNSAMPLED_RATIO = 1):
+    def drawBoxes (self, rgbImg, reps, persons, confidences):
         for r, person, confidence in zip(reps, persons, confidences):
             bb = r[0]
-            bb = dlib.rectangle(
-                    left=int(bb.left()*DOWNSAMPLED_RATIO), 
-                    top=int(bb.top()*DOWNSAMPLED_RATIO), 
-                    right=int(bb.right()*DOWNSAMPLED_RATIO), 
-                    bottom=int(bb.bottom()*DOWNSAMPLED_RATIO))
             rgbImg = self.drawBox(rgbImg, bb, person, confidence)
         return rgbImg
 
