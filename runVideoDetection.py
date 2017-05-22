@@ -4,7 +4,7 @@ import math
 from FaceDetection import FaceDetection
 #Info for face detection
 SKIP_FRAMES = 3
-DOWNSAMPLE_RATIO = 2.0
+DOWNSAMPLE_RATIO = 1.0
 #Info for streaming using ffmpeg
 FFMPEG_PROC = None;
 WIDTH = 1280;

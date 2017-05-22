@@ -16,7 +16,7 @@ openfaceModelDir = os.path.join(modelDir, 'openface')
 class FaceDetection():
 
     def __init__(self, 
-            classifierModel="./celeb-classifier.nn4.small2.v1.pkl",
+            classifierModel="./trainingData/classifier.pkl",
             dlibFacePredictor = os.path.join(dlibModelDir,"shape_predictor_68_face_landmarks.dat"),
             networkModel = os.path.join(openfaceModelDir,'nn4.small2.v1.t7'),
             imgDim = 96,
