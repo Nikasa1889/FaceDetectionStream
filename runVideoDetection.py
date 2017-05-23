@@ -4,6 +4,7 @@ import math
 #from FaceDetectionOpenFace import FaceDetection
 from FaceDetectionDlib import FaceDetection
 from FaceDetectionOpenFace import FaceDetection as Util
+from FaceWall import FaceWall
 import dlib
 #Info for face detection
 SKIP_FRAMES = 3
@@ -48,6 +49,7 @@ FFMPEG_PROC = sp.Popen(FFMPEG_COMMAND, stdin=sp.PIPE,
 
 faceDetection = FaceDetection()
 util = Util()
+faceWall = FaceWall()
 cap = cv2.VideoCapture('/root/openface/demos/stream/in.mov')
 cap.set(1, 1000) #begin at frame 200
 count = 0
@@ -78,6 +80,8 @@ if(cap.isOpened()):
                         right=int((bb.right()+CROP_X)*DOWNSAMPLE_RATIO),
                         bottom=int((bb.bottom()+CROP_Y)*DOWNSAMPLE_RATIO))
                 adjustedReps.append((bb, rep))
+
+            faceWall.putNewFaces(frame, adjustedReps, persons, confidences)
             frame_rgb = util.drawBoxes(frame_rgb, adjustedReps, persons, confidences)      
             
             #Output
@@ -85,6 +89,7 @@ if(cap.isOpened()):
             #result = cv2.resize(result, (WIDTH, HEIGHT), 
             #        interpolation = cv2.INTER_CUBIC )
             FFMPEG_PROC.stdin.write(result.tostring())
+            faceWall.renderFaces()
             count = count+1
             if (count > 20000):
                 count = 0
