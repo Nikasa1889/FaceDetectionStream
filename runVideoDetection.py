@@ -1,13 +1,13 @@
 import subprocess as sp
 import cv2
 import math
-from FaceDetection import FaceDetection
+from FaceDetectionOpenFace import FaceDetection
 import dlib
 #Info for face detection
 SKIP_FRAMES = 3
 DOWNSAMPLE_RATIO = 1.0
-CROP_X = 360 
-CROP_Y = 0
+CROP_X = 370 
+CROP_Y = 20
 CROP_WIDTH = 700
 CROP_HEIGHT = 700
 #Info for streaming using ffmpeg

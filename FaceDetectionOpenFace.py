@@ -8,13 +8,16 @@ import openface
 import time
 import dlib
 
+# This FaceDetection class use dlib to detect and align faces,
+# use openface to find encoding of the face,
+# and use SVM to classify face encodings
+#
 fileDir = os.path.dirname(os.path.realpath(__file__))
 modelDir = os.path.join(fileDir, '..','..', 'models')
 dlibModelDir = os.path.join(modelDir, 'dlib')
 openfaceModelDir = os.path.join(modelDir, 'openface')
 
 class FaceDetection():
-
     def __init__(self, 
             classifierModel="./trainingData/classifier.pkl",
             dlibFacePredictor = os.path.join(dlibModelDir,"shape_predictor_68_face_landmarks.dat"),
@@ -23,7 +26,7 @@ class FaceDetection():
             cuda = True,
             verbose = True,
             fontFace = cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale = 0.5,
+            fontScale = 1,
             fontThickness = 1,
             textBaseline = 0):
         self.classifierModel = classifierModel
