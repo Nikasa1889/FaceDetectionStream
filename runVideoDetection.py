@@ -1,7 +1,9 @@
 import subprocess as sp
 import cv2
 import math
-from FaceDetectionOpenFace import FaceDetection
+#from FaceDetectionOpenFace import FaceDetection
+from FaceDetectionDlib import FaceDetection
+from FaceDetectionOpenFace import FaceDetection as Util
 import dlib
 #Info for face detection
 SKIP_FRAMES = 3
@@ -45,13 +47,15 @@ FFMPEG_PROC = sp.Popen(FFMPEG_COMMAND, stdin=sp.PIPE,
         stdout=sp.PIPE, shell=True)
 
 faceDetection = FaceDetection()
+util = Util()
 cap = cv2.VideoCapture('/root/openface/demos/stream/in.mov')
+cap.set(1, 500) #begin at frame 200
 count = 0
 if(cap.isOpened()):
     reps = []
     persons = []
     confidences = []
-    for i in range(1,2000):
+    for i in range(500):
         ret, frame = cap.read()
         if ret:
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -72,7 +76,7 @@ if(cap.isOpened()):
                         right=int((bb.right()+CROP_X)*DOWNSAMPLE_RATIO),
                         bottom=int((bb.bottom()+CROP_Y)*DOWNSAMPLE_RATIO))
                 adjustedReps.append((bb, rep))
-            frame_rgb = faceDetection.drawBoxes(frame_rgb, adjustedReps, persons, confidences)      
+            frame_rgb = util.drawBoxes(frame_rgb, adjustedReps, persons, confidences)      
             
             #Output
             result = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
