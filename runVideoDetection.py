@@ -49,19 +49,21 @@ FFMPEG_PROC = sp.Popen(FFMPEG_COMMAND, stdin=sp.PIPE,
 faceDetection = FaceDetection()
 util = Util()
 cap = cv2.VideoCapture('/root/openface/demos/stream/in.mov')
-cap.set(1, 500) #begin at frame 200
+cap.set(1, 1000) #begin at frame 200
 count = 0
 if(cap.isOpened()):
     reps = []
     persons = []
     confidences = []
-    for i in range(500):
+    for i in range(2000):
         ret, frame = cap.read()
         if ret:
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             #Scale to smaller image
-            #frame_small = cv2.resize(frame_rgb, (0, 0), fx=1/DOWNSAMPLE_RATIO, fy=1/DOWNSAMPLE_RATIO)
-            frame_small = frame_rgb
+            if (DOWNSAMPLE_RATIO != 1.0):
+                frame_small = cv2.resize(frame_rgb, (0, 0), fx=1/DOWNSAMPLE_RATIO, fy=1/DOWNSAMPLE_RATIO)
+            else:
+                frame_small = frame_rgb
             frame_small = frame_small[CROP_Y:(CROP_Y+CROP_HEIGHT), CROP_X:(CROP_X+CROP_WIDTH)].copy() 
             #Detection here
             if (count % SKIP_FRAMES == 0):

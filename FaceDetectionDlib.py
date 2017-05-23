@@ -4,6 +4,7 @@ import cv2
 import face_recognition
 import dlib
 # This FaceDetection class use dlib for face detection, face encoding, and face comparision
+UP_SAMPLE = 1
 fileDir = os.path.dirname(os.path.realpath(__file__))
 faceDir = os.path.join(fileDir,'faces', 'faceExamples')
 valid_images = [".jpg", ".png", ".jpeg"]
@@ -28,9 +29,13 @@ class FaceDetection():
 
         print("Known name: ", self.listOfKnownFaceNames);
     def infer(self, rgbImg, multiple=True):
-        face_locations = face_recognition.face_locations(rgbImg)
+        start = time.time()
+        face_locations = face_recognition.face_locations(rgbImg, number_of_times_to_upsample = UP_SAMPLE)
+        print("Face detection took {} seconds.".format(time.time()-start))
+        start = time.time()
         face_encodings = face_recognition.face_encodings(rgbImg, face_locations)
-        
+        print("Face encoding took {} seconds.".format(time.time()-start))
+
         reps = []
         persons = []
         confidences = []
