@@ -31,29 +31,7 @@ f_format = 'bgr24' #OpenCV bgr format, tested rbg24 without success
 #f_format = 'rgb24'
 fps = str(FPS);
 
-output_file = "out.mp4"
 
-FFMPEG_COMMAND =[ffmpeg,
-                '-y',
-                '-f', 'rawvideo',
-                '-vcodec','rawvideo',
-                '-s', dimension,
-                '-pix_fmt', f_format,
-                '-r', fps,
-                '-i', '-',
-                '-an',
-                '-vcodec', 'mpeg4',
-                '-b:v', '5000k',
-                output_file ] 
-
-FFMPEG_COMMAND = ' '.join(FFMPEG_COMMAND)
-
-FFMPEG_PROC = sp.Popen(FFMPEG_COMMAND, stdin=sp.PIPE, 
-        stdout=sp.PIPE, shell=True)
-
-faceDetection = FaceDetection()
-util = Util()
-faceWall = FaceWall()
 if __name__ == '__main__':
     #Parse arguments
     parser = argparse.ArgumentParser()
@@ -81,13 +59,41 @@ if __name__ == '__main__':
 	    print("===========================================================")
 	    print("Warning: Can't change the resolution of the webcam to 720p")
 	    print("===========================================================")
+    if (args.output == 0):
+    	faceDetectionOutput = "out.mp4"
+	faceWallOutput = "faceWall.mp4"
+    else:
+        faceDetectionOutput = "http://localhost:8000/feed1_720p.ffm"
+        faceWallOutput = "http://localhost:8000/feed2_720p.ffm"
+    
+    faceDetection = FaceDetection()
+    util = Util() 
+    faceWall = FaceWall(output = faceWallOutput)
+    FFMPEG_COMMAND =[ffmpeg,
+                '-y',
+                '-f', 'rawvideo',
+                '-vcodec','rawvideo',
+                '-s', dimension,
+                '-pix_fmt', f_format,
+                '-r', fps,
+                '-i', '-',
+                '-an',
+                '-vcodec', 'mpeg4',
+                '-b:v', '5000k',
+                faceDetectionOutput ] 
 
+    FFMPEG_COMMAND = ' '.join(FFMPEG_COMMAND)
+
+    FFMPEG_PROC = sp.Popen(FFMPEG_COMMAND, stdin=sp.PIPE, 
+        stdout=sp.PIPE, shell=True)
+       
     count = 0
     if(cap.isOpened()):
         reps = []
         persons = []
         confidences = []
-        for i in range(2000):
+        #for i in range(2000):
+	while True:
             ret, frame = cap.read()
             if ret:
 		if (frame.shape[0]!=1280) or (frame.shape[1]!=720):

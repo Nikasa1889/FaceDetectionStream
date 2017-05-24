@@ -26,7 +26,11 @@ fps = str(FPS);
 
 output_file = "faceWall.mp4"
 
-FFMPEG_COMMAND =[ffmpeg,
+
+class FaceWall():
+
+    def __init__(self, output = output_file):
+	FFMPEG_COMMAND =[ffmpeg,
                 '-y',
                 '-f', 'rawvideo',
                 '-vcodec','rawvideo',
@@ -37,13 +41,8 @@ FFMPEG_COMMAND =[ffmpeg,
                 '-an',
                 '-vcodec', 'mpeg4',
                 '-b:v', '5000k',
-                output_file ] 
-
-FFMPEG_COMMAND = ' '.join(FFMPEG_COMMAND)
-
-class FaceWall():
-
-    def __init__(self, FFMPEG_COMMAND = FFMPEG_COMMAND):
+                output ] 
+	FFMPEG_COMMAND = ' '.join(FFMPEG_COMMAND)
         self.FFMPEG_PROC = sp.Popen(FFMPEG_COMMAND, stdin=sp.PIPE, stdout=sp.PIPE, shell=True)
         self.faceCounts = 0
         self.start = time.time()
