@@ -1,11 +1,15 @@
 import subprocess as sp
 import cv2
+import cv2.cv as cv
 import math
 #from FaceDetectionOpenFace import FaceDetection
 from FaceDetectionDlib import FaceDetection
 from FaceDetectionOpenFace import FaceDetection as Util
 from FaceWall import FaceWall
 import dlib
+import sys
+import argparse
+
 #Info for face detection
 SKIP_FRAMES = 3
 DOWNSAMPLE_RATIO = 1.0
@@ -50,51 +54,79 @@ FFMPEG_PROC = sp.Popen(FFMPEG_COMMAND, stdin=sp.PIPE,
 faceDetection = FaceDetection()
 util = Util()
 faceWall = FaceWall()
-cap = cv2.VideoCapture('/root/openface/demos/stream/in.mov')
-cap.set(1, 1000) #begin at frame 200
-count = 0
-if(cap.isOpened()):
-    reps = []
-    persons = []
-    confidences = []
-    for i in range(2000):
-        ret, frame = cap.read()
-        if ret:
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            #Scale to smaller image
-            if (DOWNSAMPLE_RATIO != 1.0):
-                frame_small = cv2.resize(frame_rgb, (0, 0), fx=1/DOWNSAMPLE_RATIO, fy=1/DOWNSAMPLE_RATIO)
-            else:
-                frame_small = frame_rgb
-            frame_small = frame_small[CROP_Y:(CROP_Y+CROP_HEIGHT), CROP_X:(CROP_X+CROP_WIDTH)].copy() 
-            #Detection here
-            if (count % SKIP_FRAMES == 0):
-               (reps, persons, confidences) = faceDetection.infer(frame_small)
-            adjustedReps = []
-            for rep in reps:
-                bb = rep[0]
-                rep = rep[1]
-                bb = dlib.rectangle(
+if __name__ == '__main__':
+    #Parse arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+            '--input',
+            type=int,
+            default=0,
+            help="Webcam ID, if = -1, it will use in.mov video as input"
+            )
+    parser.add_argument(
+            '--output', 
+            type=int, 
+            default=0,
+            help="0 to output to video, and 1 to live stream video"
+            )
+
+    args = parser.parse_args()
+    if (args.input == -1):
+        cap = cv2.VideoCapture('/root/openface/demos/stream/in.mov')
+        cap.set(1, 1000) #begin at frame 200
+    else:
+        cap = cv2.VideoCapture(args.input)
+	ret = cap.set(cv.CV_CAP_PROP_FRAME_WIDTH,1280) and cap.set(cv.CV_CAP_PROP_FRAME_HEIGHT,720)
+	if not ret:
+	    print("===========================================================")
+	    print("Warning: Can't change the resolution of the webcam to 720p")
+	    print("===========================================================")
+
+    count = 0
+    if(cap.isOpened()):
+        reps = []
+        persons = []
+        confidences = []
+        for i in range(2000):
+            ret, frame = cap.read()
+            if ret:
+		if (frame.shape[0]!=1280) or (frame.shape[1]!=720):
+		    frame = cv2.resize(frame, (1280, 720))
+                frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                #Scale to smaller image
+                if (DOWNSAMPLE_RATIO != 1.0):
+                    frame_small = cv2.resize(frame_rgb, (0, 0), fx=1/DOWNSAMPLE_RATIO, fy=1/DOWNSAMPLE_RATIO)
+                else:
+                    frame_small = frame_rgb
+                frame_small = frame_small[CROP_Y:(CROP_Y+CROP_HEIGHT), CROP_X:(CROP_X+CROP_WIDTH)].copy() 
+                #Detection here
+                if (count % SKIP_FRAMES == 0):
+                    (reps, persons, confidences) = faceDetection.infer(frame_small)
+                adjustedReps = []
+                for rep in reps:
+                    bb = rep[0]
+                    rep = rep[1]
+                    bb = dlib.rectangle(
                         left=int((bb.left()+CROP_X)*DOWNSAMPLE_RATIO),
                         top=int((bb.top()+CROP_Y)*DOWNSAMPLE_RATIO),
                         right=int((bb.right()+CROP_X)*DOWNSAMPLE_RATIO),
                         bottom=int((bb.bottom()+CROP_Y)*DOWNSAMPLE_RATIO))
-                adjustedReps.append((bb, rep))
+                    adjustedReps.append((bb, rep))
 
-            faceWall.putNewFaces(frame, adjustedReps, persons, confidences)
-            frame_rgb = util.drawBoxes(frame_rgb, adjustedReps, persons, confidences)      
+                faceWall.putNewFaces(frame, adjustedReps, persons, confidences)
+                frame_rgb = util.drawBoxes(frame_rgb, adjustedReps, persons, confidences)      
             
-            #Output
-            result = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
-            #result = cv2.resize(result, (WIDTH, HEIGHT), 
-            #        interpolation = cv2.INTER_CUBIC )
-            FFMPEG_PROC.stdin.write(result.tostring())
-            faceWall.renderFaces()
-            count = count+1
-            if (count > 20000):
-                count = 0
-        else:
-            break
-cap.release()
+                #Output
+                result = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
+                #result = cv2.resize(result, (WIDTH, HEIGHT), 
+                #        interpolation = cv2.INTER_CUBIC )
+                FFMPEG_PROC.stdin.write(result.tostring())
+                faceWall.renderFaces()
+                count = count+1
+                if (count > 20000):
+                    count = 0
+            else:
+                break
+    cap.release()
 
 
