@@ -4,7 +4,8 @@ import cv2.cv as cv
 import math
 #from FaceDetectionOpenFace import FaceDetection
 from FaceDetectionDlib import FaceDetection
-from FaceDetectionOpenFace import FaceDetection as Util
+#from FaceDetectionOpenFace import FaceDetection as Util
+from Utils import drawBoxes
 from FaceWall import FaceWall
 import dlib
 import sys
@@ -54,7 +55,11 @@ if __name__ == '__main__':
         cap.set(1, 1000) #begin at frame 200
     else:
         cap = cv2.VideoCapture(args.input)
-	ret = cap.set(cv.CV_CAP_PROP_FRAME_WIDTH,1280) and cap.set(cv.CV_CAP_PROP_FRAME_HEIGHT,720)
+	#ret = cap.set(cv2.cv.CV_CAP_PROP_FPS, 12)
+	print ("Camera Width: ", cap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
+	print ("Camera Height: ", cap.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
+
+	ret = cap.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH,1280) and cap.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT,720)
 	if not ret:
 	    print("===========================================================")
 	    print("Warning: Can't change the resolution of the webcam to 720p")
@@ -67,7 +72,6 @@ if __name__ == '__main__':
         faceWallOutput = "http://localhost:8000/feed2_720p.ffm"
     
     faceDetection = FaceDetection()
-    util = Util() 
     faceWall = FaceWall(output = faceWallOutput)
     FFMPEG_COMMAND =[ffmpeg,
                 '-y',
@@ -120,7 +124,7 @@ if __name__ == '__main__':
                     adjustedReps.append((bb, rep))
 
                 faceWall.putNewFaces(frame, adjustedReps, persons, confidences)
-                frame_rgb = util.drawBoxes(frame_rgb, adjustedReps, persons, confidences)      
+                frame_rgb = drawBoxes(frame_rgb, adjustedReps, persons, confidences)      
             
                 #Output
                 result = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
