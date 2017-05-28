@@ -13,7 +13,6 @@ valid_images = [".jpg", ".png", ".jpeg"]
 class FaceDetection():
     def __init__(self, 
             faceDir=faceDir):
-        #TODO: Load face examples of each person here. Each person can have multiple faces
         self.listOfKnownFaceEncodings = []
         self.listOfKnownFaceNames = []
         print("Face dir: ", faceDir)
