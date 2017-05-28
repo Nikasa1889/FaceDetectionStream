@@ -18,7 +18,7 @@ def drawBox(rgbImg, bb, person, confidence):
                 4)
     #Calculate text length
     textSize = cv2.getTextSize(
-                '{}-{:.2f}'.format(person.decode('utf-8'), confidence), 
+                '{}-{:.2f}'.format(person, confidence), 
                     fontFace, fontScale, fontThickness)[0]
     #Draw the text background
     cv2.rectangle(rgbImg, 
@@ -27,7 +27,7 @@ def drawBox(rgbImg, bb, person, confidence):
                 (127, 255, 212), -1);
     #Now put the text on it
     cv2.putText(rgbImg, 
-                '{}-{:.2f}'.format(person.decode('utf-8'), confidence), 
+                '{}-{:.2f}'.format(person, confidence), 
                 (bb.left(), bb.top()-1),
                 fontFace, fontScale,(0, 0, 0), fontThickness
                 )

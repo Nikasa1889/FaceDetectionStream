@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     if (args.input == -1):
-        cap = cv2.VideoCapture('/root/openface/demos/stream/in.mov')
+        cap = cv2.VideoCapture('./in.mov')
         cap.set(1, 1000) #begin at frame 200
     else:
         cap = cv2.VideoCapture(args.input)
@@ -62,15 +62,26 @@ if __name__ == '__main__':
         #    print("===========================================================")
         #    print("Warning: Can't change the resolution of the webcam to 720p")
         #    print("===========================================================")
+        WIDTH = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        HEIGHT = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        if (WIDTH == 640) and (HEIGHT == 480):
+            DOWNSAMPLE_RATIO = 1.0;
+            CROP_X = 0; CROP_Y = 0; 
+            CROP_WIDTH = WIDTH-1; CROP_HEIGHT = HEIGHT-1;
+
     if (args.output == 0):
         faceDetectionOutput = "out.mp4"
         faceWallOutput = "faceWall.mp4"
     else:
-        faceDetectionOutput = "http://localhost:8000/feed1_720p.ffm"
+        if (WIDTH == 640) and (HEIGHT == 480):
+            faceDetectionOutput = "http://localhost:8000/feed1_480p.ffm"
+        else:
+            faceDetectionOutput = "http://localhost:8000/feed1_720p.ffm"
         faceWallOutput = "http://localhost:8000/feed2_720p.ffm"
     
     faceDetection = FaceDetection()
     faceWall = FaceWall(output = faceWallOutput)
+    dimension = '{}x{}'.format(WIDTH, HEIGHT)
     FFMPEG_COMMAND =[ffmpeg,
                 '-y',
                 '-f', 'rawvideo',
@@ -98,8 +109,8 @@ if __name__ == '__main__':
         while True:
             ret, frame = cap.read()
             if ret:
-                if (frame.shape[0]!=1280) or (frame.shape[1]!=720):
-                    frame = cv2.resize(frame, (1280, 720))
+                #if (frame.shape[0]!=1280) or (frame.shape[1]!=720):
+                #    frame = cv2.resize(frame, (1280, 720))
                 frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 #Scale to smaller image
                 if (DOWNSAMPLE_RATIO != 1.0):

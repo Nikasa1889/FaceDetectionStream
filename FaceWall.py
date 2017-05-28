@@ -3,6 +3,8 @@ import numpy as np
 import time
 import dlib
 import subprocess as sp
+
+from websocket import create_connection
 #Info for FACEWALL
 FACEWALL_HEIGHT = 720
 FACEWALL_WIDTH = 1280
@@ -25,7 +27,6 @@ f_format = 'bgr24' #OpenCV bgr format, tested rbg24 without success
 fps = str(FPS);
 
 output_file = "faceWall.mp4"
-
 
 class FaceWall():
 
@@ -50,7 +51,10 @@ class FaceWall():
 
         self.faceWall = np.zeros((FACEWALL_HEIGHT, FACEWALL_WIDTH, 3), np.uint8) 
         self.bestFace = np.zeros((FACE_DIM, FACE_DIM, 3), np.uint8)
+        self.bestPerson = "None"
         self.bestConfidence = 0.0
+        
+        self.wsClient = create_connection("ws://127.0.0.1:9000")
 
     def putNewFaces (self, imgBGR, reps, persons, confidences):
         if (len(confidences)> 0):
@@ -62,6 +66,7 @@ class FaceWall():
                 print(bb.top(), bb.bottom(), bb.left(), bb.right())
                 face = imgBGR[bb.top():bb.bottom(), bb.left():bb.right()]
                 self.bestFace = cv2.resize(face,(FACE_DIM, FACE_DIM))
+                self.bestPerson = persons[idxBestFace]
                 print ("Updated new face")
         
     def renderFaces(self):
@@ -70,7 +75,7 @@ class FaceWall():
         if (elapsedSeconds%3 != 2):
             self.isRendered = False
             self.bestConfidence = 0.0
-        elif ((elapsedSeconds%3 == 2)and 
+        elif ((elapsedSeconds%3 == 2) and 
                 (not self.isRendered)  and 
                 (self.bestConfidence > 0)):
             if (self.faceCounts == FACE_NROW * FACE_NCOL):
@@ -87,5 +92,7 @@ class FaceWall():
 
             self.isRendered = True
             self.bestConfidence = 0.0
-
+            if (self.bestPerson!="None"):
+                self.wsClient.send(self.bestPerson)
         self.FFMPEG_PROC.stdin.write(self.faceWall.tostring())
+        

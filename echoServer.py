@@ -43,7 +43,7 @@ class BroadcastServerProtocol(WebSocketServerProtocol):
 
     def onMessage(self, payload, isBinary):
         if not isBinary:
-            msg = "{} from {}".format(payload.decode('utf8'), self.peer)
+            msg = payload.decode('utf-8')
             self.factory.broadcast(msg)
 
     def connectionLost(self, reason):
@@ -61,13 +61,6 @@ class BroadcastServerFactory(WebSocketServerFactory):
     def __init__(self, url):
         WebSocketServerFactory.__init__(self, url)
         self.clients = []
-        self.tickcount = 0
-        self.tick()
-
-    def tick(self):
-        self.tickcount += 1
-        self.broadcast("tick %d from server" % self.tickcount)
-        reactor.callLater(1, self.tick)
 
     def register(self, client):
         if client not in self.clients:

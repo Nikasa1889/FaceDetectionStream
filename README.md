@@ -10,10 +10,11 @@ This code runs out of the box on this [preconfigured virtual machine](https://me
   sudo add-apt-repository ppa:jonathonf/ffmpeg-3
   sudo apt update && sudo apt install ffmpeg libav-tools x264 x265
   ```
-- Install twisted and autobahn to host a simple echo server
+- Install twisted, autobahn, and websocket-client to host a simple echo server
   ```bash
   sudo pip install twisted
   sudo pip install autobahn
+  sudo pip install websocket-client
   ```
 ### How to run:
   ```bash
