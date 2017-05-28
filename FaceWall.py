@@ -30,7 +30,7 @@ output_file = "faceWall.mp4"
 class FaceWall():
 
     def __init__(self, output = output_file):
-	FFMPEG_COMMAND =[ffmpeg,
+        FFMPEG_COMMAND =[ffmpeg,
                 '-y',
                 '-f', 'rawvideo',
                 '-vcodec','rawvideo',
@@ -42,7 +42,7 @@ class FaceWall():
                 '-vcodec', 'mpeg4',
                 '-b:v', '5000k',
                 output ] 
-	FFMPEG_COMMAND = ' '.join(FFMPEG_COMMAND)
+        FFMPEG_COMMAND = ' '.join(FFMPEG_COMMAND)
         self.FFMPEG_PROC = sp.Popen(FFMPEG_COMMAND, stdin=sp.PIPE, stdout=sp.PIPE, shell=True)
         self.faceCounts = 0
         self.start = time.time()

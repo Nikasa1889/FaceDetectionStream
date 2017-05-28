@@ -1,6 +1,5 @@
 import subprocess as sp
 import cv2
-import cv2.cv as cv
 import math
 #from FaceDetectionOpenFace import FaceDetection
 from FaceDetectionDlib import FaceDetection
@@ -56,17 +55,16 @@ if __name__ == '__main__':
     else:
         cap = cv2.VideoCapture(args.input)
 	#ret = cap.set(cv2.cv.CV_CAP_PROP_FPS, 12)
-	print ("Camera Width: ", cap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
-	print ("Camera Height: ", cap.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
-
-	ret = cap.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH,1280) and cap.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT,720)
-	if not ret:
-	    print("===========================================================")
-	    print("Warning: Can't change the resolution of the webcam to 720p")
-	    print("===========================================================")
+        print ("Camera Width: ", cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        print ("Camera Height: ", cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        #ret = cap.set(cv2.CAP_PROP_FRAME_WIDTH,1280) and cap.set(cv2.CAP_PROP_FRAME_HEIGHT,720)
+        #if not ret:
+        #    print("===========================================================")
+        #    print("Warning: Can't change the resolution of the webcam to 720p")
+        #    print("===========================================================")
     if (args.output == 0):
-    	faceDetectionOutput = "out.mp4"
-	faceWallOutput = "faceWall.mp4"
+        faceDetectionOutput = "out.mp4"
+        faceWallOutput = "faceWall.mp4"
     else:
         faceDetectionOutput = "http://localhost:8000/feed1_720p.ffm"
         faceWallOutput = "http://localhost:8000/feed2_720p.ffm"
@@ -97,11 +95,11 @@ if __name__ == '__main__':
         persons = []
         confidences = []
         #for i in range(2000):
-	while True:
+        while True:
             ret, frame = cap.read()
             if ret:
-		if (frame.shape[0]!=1280) or (frame.shape[1]!=720):
-		    frame = cv2.resize(frame, (1280, 720))
+                if (frame.shape[0]!=1280) or (frame.shape[1]!=720):
+                    frame = cv2.resize(frame, (1280, 720))
                 frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 #Scale to smaller image
                 if (DOWNSAMPLE_RATIO != 1.0):
