@@ -8,10 +8,10 @@ from websocket import create_connection
 #Info for FACEWALL
 FACEWALL_HEIGHT = 720
 FACEWALL_WIDTH = 1280
-FACE_DIM = 78
-FACE_SPACE = 2
-FACE_NROW = 9
-FACE_NCOL = 16
+FACE_DIM = 156
+FACE_SPACE = 4
+FACE_NROW = 8
+FACE_NCOL = 4
 
 #Info for streaming using ffmpeg
 FFMPEG_PROC = None;
@@ -53,10 +53,17 @@ class FaceWall():
         self.bestFace = np.zeros((FACE_DIM, FACE_DIM, 3), np.uint8)
         self.bestPerson = "None"
         self.bestConfidence = 0.0
-        
+        self.detectedPersons = [] 
         self.wsClient = create_connection("ws://127.0.0.1:9000")
 
     def putNewFaces (self, imgBGR, reps, persons, confidences):
+        newDetectedPersonIdx = [idx for idx, person in enumerate(persons) 
+                                if person not in self.detectedPersons]
+        print(newDetectedPersonIdx)
+        reps = [reps[idx] for idx in newDetectedPersonIdx]
+        persons = [persons[idx] for idx in newDetectedPersonIdx]
+        confidences = [confidences[idx] for idx in newDetectedPersonIdx]
+
         if (len(confidences)> 0):
             maxConfidence = max(confidences)
             idxBestFace = confidences.index(maxConfidence)
@@ -94,5 +101,6 @@ class FaceWall():
             self.bestConfidence = 0.0
             if (self.bestPerson!="None"):
                 self.wsClient.send(self.bestPerson)
+                self.detectedPersons.append(self.bestPerson)
         self.FFMPEG_PROC.stdin.write(self.faceWall.tostring())
         
