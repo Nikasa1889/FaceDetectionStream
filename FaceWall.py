@@ -13,6 +13,9 @@ FACE_SPACE = 4
 FACE_NROW = 8
 FACE_NCOL = 4
 
+#Info for google-tts command
+TTS_COMMAND = "./simple-google-tts/simple_google_tts"
+MESSAGE_FILE = "./wellcomeMessages.txt"
 #Info for streaming using ffmpeg
 FFMPEG_PROC = None;
 WIDTH = 1280;
@@ -54,7 +57,13 @@ class FaceWall():
         self.bestPerson = "None"
         self.bestConfidence = 0.0
         self.detectedPersons = [] 
+
+        self.wellcomeMessages = []
+        with open(MESSAGE_FILE, "r") as f:
+            self.wellcomeMessages = eval(f.read())
+
         self.wsClient = create_connection("ws://127.0.0.1:9000")
+
 
     def putNewFaces (self, imgBGR, reps, persons, confidences):
         newDetectedPersonIdx = [idx for idx, person in enumerate(persons) 
@@ -102,7 +111,10 @@ class FaceWall():
             if (self.bestPerson!="None"):
                 self.wsClient.send(self.bestPerson)
                 self.detectedPersons.append(self.bestPerson)
-                sp.Popen(["./simple-google-tts/simple_google_tts","en", "Hi there, new face detected!"],stdin=sp.PIPE, stdout=sp.PIPE)
+                try:
+                    sp.Popen([TTS_COMMAND,"en", self.wellcomeMessages[self.bestPerson]],stdin=sp.PIPE, stdout=sp.PIPE)
+                except e:
+                    print("Error while running TTS. {0}:{1} ".format(e.errno, e.strerror))
 
         self.FFMPEG_PROC.stdin.write(self.faceWall.tostring())
         
