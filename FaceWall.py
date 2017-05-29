@@ -102,5 +102,7 @@ class FaceWall():
             if (self.bestPerson!="None"):
                 self.wsClient.send(self.bestPerson)
                 self.detectedPersons.append(self.bestPerson)
+                sp.Popen(["./simple-google-tts/simple_google_tts","en", "Hi there, new face detected!"],stdin=sp.PIPE, stdout=sp.PIPE)
+
         self.FFMPEG_PROC.stdin.write(self.faceWall.tostring())
         
