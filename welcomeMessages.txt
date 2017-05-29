@@ -1,0 +1,3 @@
+{"Dang": "Hi Dang! Hvordan har du det i dag?", 
+"Hieu": "Hi Hieu! Hva gjør du her?",
+"Rajeev": "Hi Rajeev! Velkommen til eSmart"}
