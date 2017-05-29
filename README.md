@@ -16,6 +16,11 @@ This code runs out of the box on this [preconfigured virtual machine](https://me
   sudo pip install autobahn
   sudo pip install websocket-client
   ```
+- Install dependecy to run google text-to-speech service, using this [simple google tts](http://tuxdiary.com/2014/09/29/google-text-to-speech-tts-linux/) project
+  ```bash
+  sudo apt-get install xsel libnotify-bin libttspico0 libttspico-utils libttspico-data libwww-perl libwww-mechanize-perl libhtml-tree-perl sox libsox-fmt-mp3
+  ```
+  use option -p if you want to use pico2wave TTS instead of Google's TTS
 ### How to run:
   ```bash
   cd $FaceDetectionStream
@@ -31,3 +36,4 @@ This code runs out of the box on this [preconfigured virtual machine](https://me
   localhost:8080
   ```
   To let other machine to access to the services hosted inside VMware, you must set the network of the virtual machine to use VMNet0 interface. That is a bridged interface. Then go to Edit -> Virtual Network Editor -> Change Settings (bottom right) -> Select VMNet0 -> in the Bridge to box, select the network apdater that you want to bridge to (the one that the host machine is using to connect to the local network). 
+

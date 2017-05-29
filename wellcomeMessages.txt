@@ -1,0 +1,3 @@
+{"Dang": "Hi Dang! How are you today?", 
+"Hieu": "Hi Hieu! What are you doing here?",
+"Rajeev": "Hi Rajeev! Welcome to eSmart."}
