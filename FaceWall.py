@@ -5,6 +5,7 @@ import dlib
 import subprocess as sp
 
 from websocket import create_connection
+from Utils import drawText
 #Info for FACEWALL
 FACEWALL_HEIGHT = 720
 FACEWALL_WIDTH = 1280
@@ -106,6 +107,7 @@ class FaceWall():
                 faceBottom = faceTop + FACE_DIM
                 faceRight = faceLeft + FACE_DIM
                 self.faceWall[faceTop:faceBottom, faceLeft:faceRight] = face
+                faceWall = drawText(self.faceWall, person, faceLeft, faceBottom+FACE_SPACE, fontScale = 1)
 
         self.FFMPEG_PROC.stdin.write(self.faceWall.tostring())
         

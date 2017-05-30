@@ -6,31 +6,34 @@ import numpy as np
 # use openface to find encoding of the face,
 # and use SVM to classify face encodings
 #
-fontFace = cv2.FONT_HERSHEY_SIMPLEX
-fontScale = 0.5
+fontFace = cv2.FONT_HERSHEY_DUPLEX
 fontThickness = 1
+def drawText(rgbImg, text, x, y, fontScale = 0.6):
+    #Calculate text length
+    textSize = cv2.getTextSize(
+                text, 
+                fontFace, fontScale, fontThickness)[0]
+    #Draw the text background
+    cv2.rectangle(rgbImg, 
+                (x, y), 
+                (x + textSize[0], y -textSize[1]), 
+                (0, 0, 255), cv2.FILLED);
+    #Now put the text on it
+    cv2.putText(rgbImg, 
+                text, 
+                (x, y-2),
+                fontFace, fontScale,(255, 255, 255), fontThickness
+                )
+    return rgbImg 
 
 def drawBox(rgbImg, bb, person, confidence):
     #Draw bounding box first
     cv2.rectangle(rgbImg, 
                 (bb.left(), bb.bottom()), (bb.right(), bb.top()),
-                (127, 255, 212),
+                (0, 0, 255),
                 4)
-    #Calculate text length
-    textSize = cv2.getTextSize(
-                '{}-{:.2f}'.format(person, confidence), 
-                    fontFace, fontScale, fontThickness)[0]
-    #Draw the text background
-    cv2.rectangle(rgbImg, 
-                (bb.left(), bb.top()), 
-                (bb.left() + textSize[0], bb.top() -textSize[1]), 
-                (127, 255, 212), -1);
-    #Now put the text on it
-    cv2.putText(rgbImg, 
-                '{}-{:.2f}'.format(person, confidence), 
-                (bb.left(), bb.top()-1),
-                fontFace, fontScale,(0, 0, 0), fontThickness
-                )
+    text = '{}-{:.2f}'.format(person, confidence)
+    rgbImg = drawText(rgbImg, text, bb.left(), bb.top())
     return rgbImg
 
 def drawBoxes (rgbImg, reps, persons, confidences):
