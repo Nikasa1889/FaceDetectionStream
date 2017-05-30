@@ -122,26 +122,25 @@ if __name__ == '__main__':
                 #Detection here
                 if (count % SKIP_FRAMES == 0):
                     (reps, persons, confidences) = faceDetection.infer(frame_small)
-                adjustedReps = []
-                for rep in reps:
-                    bb = rep[0]
-                    rep = rep[1]
-                    bb = dlib.rectangle(
-                        left=int((bb.left()+CROP_X)*DOWNSAMPLE_RATIO),
-                        top=int((bb.top()+CROP_Y)*DOWNSAMPLE_RATIO),
-                        right=int((bb.right()+CROP_X)*DOWNSAMPLE_RATIO),
-                        bottom=int((bb.bottom()+CROP_Y)*DOWNSAMPLE_RATIO))
-                    adjustedReps.append((bb, rep))
+                    adjustedReps = []
+                    for rep in reps:
+                        bb = rep[0]
+                        rep = rep[1]
+                        bb = dlib.rectangle(
+                            left=int((bb.left()+CROP_X)*DOWNSAMPLE_RATIO),
+                            top=int((bb.top()+CROP_Y)*DOWNSAMPLE_RATIO),
+                            right=int((bb.right()+CROP_X)*DOWNSAMPLE_RATIO),
+                            bottom=int((bb.bottom()+CROP_Y)*DOWNSAMPLE_RATIO))
+                        adjustedReps.append((bb, rep))
 
-                faceWall.putNewFaces(frame, adjustedReps, persons, confidences)
+                    faceWall.putNewFaces(frame, adjustedReps, persons, confidences)
                 frame_rgb = drawBoxes(frame_rgb, adjustedReps, persons, confidences)      
-            
                 #Output
                 result = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
                 #result = cv2.resize(result, (WIDTH, HEIGHT), 
                 #        interpolation = cv2.INTER_CUBIC )
                 FFMPEG_PROC.stdin.write(result.tostring())
-                faceWall.renderFaces()
+                #faceWall.renderFaces()
                 count = count+1
                 if (count > 20000):
                     count = 0
