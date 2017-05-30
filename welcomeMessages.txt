@@ -1,3 +1,8 @@
 {"Dang": "Hi Dang! Hvordan har du det i dag?", 
 "Hieu": "Hi Hieu! Hva gjør du her?",
-"Rajeev": "Hi Rajeev! Velkommen til eSmart"}
+"Rajeev": "Hi Rajeev! Velkommen til eSmart",
+"Davide":"Hi Davide! Vil du fly med meg?",
+"Huyen":"Hi Huyen! Kan jeg besøke ditt nye hus?",
+"Lasya":"Hi Lasya! Hvordan er barnet ditt?",
+"Tore":"Hi Tore! Jeg har fått en ny ide for deg!",
+"Kaja":"Hi Kaja! Elsker du halden ennå?"}
