@@ -7,7 +7,7 @@ import numpy as np
 # and use SVM to classify face encodings
 #
 fontFace = cv2.FONT_HERSHEY_SIMPLEX
-fontScale = 1
+fontScale = 0.5
 fontThickness = 1
 
 def drawBox(rgbImg, bb, person, confidence):

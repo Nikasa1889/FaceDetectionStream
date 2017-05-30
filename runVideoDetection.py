@@ -73,12 +73,13 @@ if __name__ == '__main__':
         faceDetectionOutput = "out.mp4"
         faceWallOutput = "faceWall.mp4"
     else:
-        if (WIDTH == 640) and (HEIGHT == 480):
-            faceDetectionOutput = "http://localhost:8000/feed1_480p.ffm"
-        else:
-            faceDetectionOutput = "http://localhost:8000/feed1_720p.ffm"
         faceWallOutput = "http://localhost:8000/feed2_720p.ffm"
-    
+        faceDetectionOutput = "http://localhost:8000/feed1_720p.ffm"
+        #if (WIDTH == 640) and (HEIGHT == 480):
+        #    faceDetectionOutput = "http://localhost:8000/feed1_480p.ffm"
+        #else:
+        #    faceDetectionOutput = "http://localhost:8000/feed1_720p.ffm"
+        #faceWallOutput = "http://localhost:8000/feed2_720p.ffm"
     faceDetection = FaceDetection()
     faceWall = FaceWall(output = faceWallOutput)
     dimension = '{}x{}'.format(WIDTH, HEIGHT)
