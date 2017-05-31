@@ -62,6 +62,8 @@ class FaceWall():
         self.realtimeFaces = dict.fromkeys(self.welcomeMessages.keys(),None)
         self.countFaces =  dict.fromkeys(self.welcomeMessages.keys(),0)
         self.wsClient = create_connection("ws://127.0.0.1:9000")
+        self.announcer = None
+        self.waitingMessages = []
 
     def putNewFaces (self, imgBGR, reps, persons, confidences):
         #Increase the number of occurrence of a person face in the last 3s
@@ -96,22 +98,27 @@ class FaceWall():
                 #First time detected a new person
                 self.realtimeFaces[person] = True #A placeholder for real image
                 self.wsClient.send(person)
-                try:
-                    sp.Popen([TTS_COMMAND,"no", self.welcomeMessages[person]],stdin=sp.PIPE, stdout=sp.PIPE)
-                except e:
-                    print("Error while running TTS. {0}:{1} ".format(e.errno, e.strerror))
-            #Reset Counting
+                self.waitingMessages.append(self.welcomeMessages[person])
+           #Reset Counting
             for person in self.countFaces.keys():
                 self.countFaces[person] = 0
         for idx, (person, face) in enumerate(self.realtimeFaces.items()):
             if (face is not None):
-                print("-----------{0}--------".format(idx))
                 faceTop = int(idx / FACE_NCOL)*(FACE_DIM+FACE_SPACE)
                 faceLeft = (idx % int(FACE_NCOL))*(FACE_DIM+FACE_SPACE)
                 faceBottom = faceTop + FACE_DIM
                 faceRight = faceLeft + FACE_DIM
                 self.faceWall[faceTop:faceBottom, faceLeft:faceRight] = face
                 faceWall = drawText(self.faceWall, person, faceLeft, faceBottom+FACE_SPACE, fontScale = 0.5)
-
+        #Announce if there are waiting messages
+        try:
+            if ((len(self.waitingMessages)>0) and 
+                ((self.announcer is None) or 
+                (self.announcer.poll() is not None))):
+                message = self.waitingMessages.pop(0)
+                self.announcer = sp.Popen([TTS_COMMAND,"no", message], stdin=sp.PIPE, stdout=sp.PIPE)
+        except e:
+            print("Error while running TTS. {0}:{1} ".format(e.errno, e.strerror))
+        #Render Facewall
         self.FFMPEG_PROC.stdin.write(self.faceWall.tostring())
-        
+
