@@ -67,36 +67,40 @@ class FaceWall():
         #Increase the number of occurrence of a person face in the last 3s
         #If within 3s there are more than 10 occurence of that person, then
         #It's his face, pick the best face of him to show first
-        THRESHOLD_FACE_COUNTS = 5
         for idx, person in enumerate(persons):
             if (person not in self.countFaces.keys()):
                 if (person != "Unknown"):
                     print("Detected: {0} , who is not in the list".format(person))
                 continue
-            self.countFaces[person] = self.countFaces[person] + 1
-            if ((self.countFaces[person] > THRESHOLD_FACE_COUNTS) and 
-               (self.realtimeFaces[person] is None)):
-                #First time detected a new person
-                self.wsClient.send(person)
-                try:
-                    sp.Popen([TTS_COMMAND,"no", self.welcomeMessages[person]],stdin=sp.PIPE, stdout=sp.PIPE)
-                except e:
-                    print("Error while running TTS. {0}:{1} ".format(e.errno, e.strerror))
-               
-            if ((self.countFaces[person] > THRESHOLD_FACE_COUNTS) or
-               (self.realtimeFaces[person] is not None)):
+            #Do not count for detected person
+            if (self.realtimeFaces[person] is None):
+                self.countFaces[person] = self.countFaces[person] + 1
+              
+            if self.realtimeFaces[person] is not None:
                 bb = reps[idx][0]
                 face = imgBGR[bb.top():bb.bottom(), bb.left():bb.right()]
                 self.realtimeFaces[person] = cv2.resize(face,(FACE_DIM, FACE_DIM), interpolation = cv2.INTER_NEAREST) #Nearest is fastest
         self.renderFaces()
         
     def renderFaces(self):
+        THRESHOLD_FACE_COUNTS = 5
         elapsedSeconds = int(time.time()-self.start)
         if (elapsedSeconds % 3 != 2):
             self.hasReset = False
         elif ((elapsedSeconds % 3 == 2) and 
                 (not self.hasReset)):
             self.hasReset = True
+            person = max(self.countFaces, key = self.countFaces.get)
+            if ((self.countFaces[person] > THRESHOLD_FACE_COUNTS) and 
+                (self.realtimeFaces[person] is None)):
+                #First time detected a new person
+                self.realtimeFaces[person] = True #A placeholder for real image
+                self.wsClient.send(person)
+                try:
+                    sp.Popen([TTS_COMMAND,"no", self.welcomeMessages[person]],stdin=sp.PIPE, stdout=sp.PIPE)
+                except e:
+                    print("Error while running TTS. {0}:{1} ".format(e.errno, e.strerror))
+            #Reset Counting
             for person in self.countFaces.keys():
                 self.countFaces[person] = 0
         for idx, (person, face) in enumerate(self.realtimeFaces.items()):
@@ -107,7 +111,7 @@ class FaceWall():
                 faceBottom = faceTop + FACE_DIM
                 faceRight = faceLeft + FACE_DIM
                 self.faceWall[faceTop:faceBottom, faceLeft:faceRight] = face
-                faceWall = drawText(self.faceWall, person, faceLeft, faceBottom+FACE_SPACE, fontScale = 0.8)
+                faceWall = drawText(self.faceWall, person, faceLeft, faceBottom+FACE_SPACE, fontScale = 0.5)
 
         self.FFMPEG_PROC.stdin.write(self.faceWall.tostring())
         
