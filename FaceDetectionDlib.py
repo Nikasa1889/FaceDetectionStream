@@ -31,10 +31,14 @@ class FaceDetection():
         self.welcomeMessages = []
         with open(MESSAGE_FILE, "r") as f:
             self.welcomeMessages = eval(f.read())
-        if (set(self.welcomeMessages.keys()).issubset(set(self.listOfKnownFaceNames))
-            and set(self.listOfKnownFaceNames).issubset(set(self.welcomeMessages.keys()))):
+        nameWelcome = set(self.welcomeMessages.keys())
+        nameFace = set(self.listOfKnownFaceNames)
+        if (nameWelcome.issubset(nameFace)
+            and nameFace.issubset(nameWelcome)):
             print("Known name: ", self.listOfKnownFaceNames)
         else:
+            print("Names in welcomeMessage but not face examples: {}".format(nameWelcome.difference(nameFace)))
+            print("Names in face examples but not in welcomeMessage: {}".format(nameFace.difference(nameWelcome)))
             raise ValueError('Names in the face example images are not consistent with welcomeMessage file')
 
     def infer(self, rgbImg, multiple=True):

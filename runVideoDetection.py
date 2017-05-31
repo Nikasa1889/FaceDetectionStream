@@ -64,6 +64,8 @@ if __name__ == '__main__':
         #    print("===========================================================")
         WIDTH = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         HEIGHT = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        if (WIDTH == 0) or (HEIGHT == 0):
+            raise IOError("Error: Can't get frame from camera {}".format(args.input))
         if (WIDTH == 640) and (HEIGHT == 480):
             DOWNSAMPLE_RATIO = 1.0;
             CROP_X = 0; CROP_Y = 0; 
