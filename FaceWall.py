@@ -67,7 +67,7 @@ class FaceWall():
         #Increase the number of occurrence of a person face in the last 3s
         #If within 3s there are more than 10 occurence of that person, then
         #It's his face, pick the best face of him to show first
-        THRESHOLD_FACE_COUNTS = 8
+        THRESHOLD_FACE_COUNTS = 5
         for idx, person in enumerate(persons):
             if (person not in self.countFaces.keys()):
                 if (person != "Unknown"):
@@ -107,7 +107,7 @@ class FaceWall():
                 faceBottom = faceTop + FACE_DIM
                 faceRight = faceLeft + FACE_DIM
                 self.faceWall[faceTop:faceBottom, faceLeft:faceRight] = face
-                faceWall = drawText(self.faceWall, person, faceLeft, faceBottom+FACE_SPACE, fontScale = 1)
+                faceWall = drawText(self.faceWall, person, faceLeft, faceBottom+FACE_SPACE, fontScale = 0.8)
 
         self.FFMPEG_PROC.stdin.write(self.faceWall.tostring())
         

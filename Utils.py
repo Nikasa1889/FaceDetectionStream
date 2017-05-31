@@ -16,12 +16,12 @@ def drawText(rgbImg, text, x, y, fontScale = 0.6):
     #Draw the text background
     cv2.rectangle(rgbImg, 
                 (x, y), 
-                (x + textSize[0], y -textSize[1]), 
+                (x + textSize[0]+2, y - textSize[1]-6), 
                 (0, 0, 255), cv2.FILLED);
     #Now put the text on it
     cv2.putText(rgbImg, 
                 text, 
-                (x, y-2),
+                (x+2, y-6),
                 fontFace, fontScale,(255, 255, 255), fontThickness
                 )
     return rgbImg 
