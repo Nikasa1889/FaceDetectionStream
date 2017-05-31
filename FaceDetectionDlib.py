@@ -5,7 +5,7 @@ import face_recognition
 import dlib
 # This FaceDetection class use dlib for face detection, face encoding, and face comparision
 UP_SAMPLE = 1
-
+MESSAGE_FILE = "./welcomeMessages.txt"
 fileDir = os.path.dirname(os.path.realpath(__file__))
 faceDir = os.path.join(fileDir,'faces', 'faceExamples')
 valid_images = [".jpg", ".png", ".jpeg"]
@@ -27,8 +27,15 @@ class FaceDetection():
                 face_encoding = face_encodings[0]
                 self.listOfKnownFaceEncodings.append(face_encoding)
                 self.listOfKnownFaceNames.append(name.split("_")[0])
-
-        print("Known name: ", self.listOfKnownFaceNames);
+        #Check consistency between welcome messages and faceExamples
+        self.welcomeMessages = []
+        with open(MESSAGE_FILE, "r") as f:
+            self.welcomeMessages = eval(f.read())
+        if (set(self.welcomeMessages.keys()).issubset(set(self.listOfKnownFaceNames))
+            and set(self.listOfKnownFaceNames).issubset(set(self.welcomeMessages.keys()))):
+            print("Known name: ", self.listOfKnownFaceNames)
+        else:
+            raise ValueError('Names in the face example images are not consistent with welcomeMessage file')
 
     def infer(self, rgbImg, multiple=True):
         start = time.time()
