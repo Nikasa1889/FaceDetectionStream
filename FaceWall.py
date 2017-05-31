@@ -56,7 +56,7 @@ class FaceWall():
         self.faceWall = np.zeros((FACEWALL_HEIGHT, FACEWALL_WIDTH, 3), np.uint8) 
         self.welcomeMessages = []
         with open(MESSAGE_FILE, "r") as f:
-            self.welcomeMessages = eval(f.read())
+            self.welcomeMessages = eval(f.read().encode("utf-8"))
         for idx, person in enumerate(self.welcomeMessages):
             print("{0}   : {1}".format(person, idx))
         self.realtimeFaces = dict.fromkeys(self.welcomeMessages.keys(),None)

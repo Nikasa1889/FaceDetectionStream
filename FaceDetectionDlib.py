@@ -30,7 +30,7 @@ class FaceDetection():
         #Check consistency between welcome messages and faceExamples
         self.welcomeMessages = []
         with open(MESSAGE_FILE, "r") as f:
-            self.welcomeMessages = eval(f.read())
+            self.welcomeMessages = eval(f.read().encode("utf-8"))
         nameWelcome = set(self.welcomeMessages.keys())
         nameFace = set(self.listOfKnownFaceNames)
         if (nameWelcome.issubset(nameFace)
