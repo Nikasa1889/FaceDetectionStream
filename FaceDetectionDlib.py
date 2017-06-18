@@ -7,7 +7,7 @@ import dlib
 UP_SAMPLE = 1
 MESSAGE_FILE = "./welcomeMessages.txt"
 fileDir = os.path.dirname(os.path.realpath(__file__))
-faceDir = os.path.join(fileDir,'faces', 'faceExamples')
+faceDir = os.path.join(fileDir,'images', 'faces')
 valid_images = [".jpg", ".png", ".jpeg"]
 
 class FaceDetection():

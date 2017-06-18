@@ -1,0 +1,91 @@
+h1, h2, h3, h4, h5, h6, p, span, li, ol, ul, div, nav, main, a, header, input, table, td, tr, th {
+  font-family: "SohoGothicStd", "Open Sans", "Roboto", "Helvetica" !important; }
+
+* {
+  margin: 0;
+  padding: 0; }
+
+::selection {
+  background: #83cff4; }
+
+body, html, #app {
+  position: relative;
+  height: 100%;
+  background: #424242; }
+
+#home {
+  position: absolute;
+  width: 100%;
+  height: 100%; }
+
+.content {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto; }
+
+.layout {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 4em);
+  padding-left: 2em;
+  padding-right: 2em;
+  height: 100%; }
+  .layout > p {
+    max-width: 570px;
+    text-align: left;
+    color: #7f7f7f;
+    font-size: 22px;
+    width: 100%;
+    flex: 0.3;
+    padding: 1em; }
+  .layout > h2 {
+    color: #43454d;
+    padding: 1em; }
+  .layout > span {
+    width: 2.5em;
+    border-bottom: 0.25em solid #83cff4;
+    margin-bottom: 1em; }
+  .layout .layout-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 1em; }
+    .layout .layout-row .layout-column {
+      flex: 0.5;
+      padding: 1em; }
+    .layout .layout-row .layout-column:nth-child(1) {
+      text-align: left; }
+    .layout .layout-row .layout-column:nth-child(2) {
+      text-align: right; }
+
+.card {
+  animation-name: cardintro;
+  animation-duration: 1s;
+  transition: all .5s;
+  -webkit-transition: all .5s; }
+
+@keyframes cardintro {
+  0% {
+    transform: scale(0.01);
+    webkit-filter: blur(40px); }
+  100% {
+    transform: scale(1);
+    webkit-filter: blur(0px); } }
+
+.shader {
+  background: rgba(0, 0, 0, 0.75);
+  animation-name: shader;
+  animation-duration: 1s; }
+
+@keyframes shader {
+  0% {
+    background: transparent; }
+  100% {
+    background-color: rgba(0, 0, 0, 0.75); } }
+
+/*# sourceMappingURL=style.css.map*/
