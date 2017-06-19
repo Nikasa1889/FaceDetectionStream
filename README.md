@@ -38,3 +38,8 @@ This code runs out of the box on this [preconfigured virtual machine](https://me
   ```
   To let other machine to access to the services hosted inside VMware, you must set the network of the virtual machine to use VMNet0 interface. That is a bridged interface. Then go to Edit -> Virtual Network Editor -> Change Settings (bottom right) -> Select VMNet0 -> in the Bridge to box, select the network apdater that you want to bridge to (the one that the host machine is using to connect to the local network). 
 
+### How to change faces and welcome messages
+  Face examples are stored in ```images/faces```
+  Welcome messages are stored in ```./welcomeMessages.txt```
+  You should also update the list of people in ```app.js```, search for "Dang" name may help
+  Names of face examples images, names in welcomeMessages.txt, and names in app.js must match
