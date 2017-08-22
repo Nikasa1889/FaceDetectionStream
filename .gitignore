@@ -6,3 +6,5 @@ videos/
 data/
 alignedData/
 dlib/
+.idea/
+*.pyc

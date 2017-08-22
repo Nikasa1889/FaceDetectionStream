@@ -109,15 +109,16 @@ def _raw_face_landmarks(face_image, face_locations=None):
     return [pose_predictor(face_image, face_location) for face_location in face_locations]
 
 
-def face_landmarks(face_image, face_locations=None):
+def face_landmarks(face_image, face_locations=None, raw_landmarks=None):
     """
     Given an image, returns a dict of face feature locations (eyes, nose, etc) for each face in the image
 
     :param face_image: image to search
     :param face_locations: Optionally provide a list of face locations to check.
+    :param raw_landmarks: landmarks returned from somewhere, e.g face_encodings
     :return: A list of dicts of face feature locations (eyes, nose, etc)
     """
-    landmarks = _raw_face_landmarks(face_image, face_locations)
+    landmarks = _raw_face_landmarks(face_image, face_locations) if raw_landmarks is None else raw_landmarks
     landmarks_as_tuples = [[(p.x, p.y) for p in landmark.parts()] for landmark in landmarks]
 
     # For a definition of each point index, see https://cdn-images-1.medium.com/max/1600/1*AbEg31EgkbXSQehuNJBlWg.png
@@ -144,8 +145,9 @@ def face_encodings(face_image, known_face_locations=None, num_jitters=1):
     :return: A list of 128-dimentional face encodings (one for each face in the image)
     """
     raw_landmarks = _raw_face_landmarks(face_image, known_face_locations)
+    face_encoded = [np.array(face_encoder.compute_face_descriptor(face_image, raw_landmark_set, num_jitters)) for raw_landmark_set in raw_landmarks]
 
-    return [np.array(face_encoder.compute_face_descriptor(face_image, raw_landmark_set, num_jitters)) for raw_landmark_set in raw_landmarks]
+    return face_encoded, raw_landmarks
 
 
 def compare_faces(known_face_encodings, face_encoding_to_check, tolerance=0.6):

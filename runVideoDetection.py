@@ -4,7 +4,7 @@ import math
 #from FaceDetectionOpenFace import FaceDetection
 from FaceDetectionDlib import FaceDetection
 #from FaceDetectionOpenFace import FaceDetection as Util
-from Utils import drawBoxes
+from Utils import drawBoxes, drawFaceLine, drawMakeUp
 from FaceWall import FaceWall
 import dlib
 import sys
@@ -23,6 +23,9 @@ WIDTH = 1280;
 HEIGHT = 720;
 
 FPS = 24;
+
+# 0 to draw bounding box, 1 to draw faceline
+BOX_FACELINE_MAKEUP = 2
 
 #Format the video output
 ffmpeg = 'ffmpeg'
@@ -108,6 +111,7 @@ if __name__ == '__main__':
         reps = []
         persons = []
         confidences = []
+        face_landmarks = []
         #for i in range(2000):
         while True:
             ret, frame = cap.read()
@@ -123,7 +127,9 @@ if __name__ == '__main__':
                 frame_small = frame_small[CROP_Y:(CROP_Y+CROP_HEIGHT), CROP_X:(CROP_X+CROP_WIDTH)].copy() 
                 #Detection here
                 if (count % SKIP_FRAMES == 0):
-                    (reps, persons, confidences) = faceDetection.infer(frame_small)
+                    (reps, persons, confidences, raw_landmarks) = faceDetection.infer(frame_small)
+                    if (BOX_FACELINE_MAKEUP == 1) or BOX_FACELINE_MAKEUP == 2:
+                        face_landmarks = faceDetection.recognize_face_landmark(None, raw_landmarks)
                     adjustedReps = []
                     for rep in reps:
                         bb = rep[0]
@@ -136,7 +142,12 @@ if __name__ == '__main__':
                         adjustedReps.append((bb, rep))
 
                     faceWall.putNewFaces(frame, adjustedReps, persons, confidences)
-                frame_rgb = drawBoxes(frame_rgb, adjustedReps, persons, confidences)      
+                if BOX_FACELINE_MAKEUP == 1:
+                    frame_rgb = drawFaceLine(frame_rgb, adjustedReps, persons, confidences, face_landmarks)
+                elif BOX_FACELINE_MAKEUP == 2:
+                    frame_rgb = drawMakeUp(frame_rgb, adjustedReps, persons, confidences, face_landmarks)
+                else:
+                    frame_rgb = drawBoxes(frame_rgb, adjustedReps, persons, confidences)
                 #Output
                 result = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
                 #result = cv2.resize(result, (WIDTH, HEIGHT), 
