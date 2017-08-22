@@ -1,0 +1,2 @@
+{"Princess Mette-Marit": "Hey Princess! Hvordan har du det i dag?",
+"Prince Haakon": "Hey Prince! Velkommen til eSmart?"}

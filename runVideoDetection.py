@@ -25,7 +25,7 @@ HEIGHT = 720;
 FPS = 24;
 
 # 0 to draw bounding box, 1 to draw faceline
-BOX_FACELINE_MAKEUP = 2
+BOX_FACELINE_MAKEUP = 0
 
 #Format the video output
 ffmpeg = 'ffmpeg'
