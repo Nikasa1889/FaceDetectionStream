@@ -16,7 +16,7 @@ FACE_NCOL = 8
 
 #Info for google-tts command
 TTS_COMMAND = "./simple-google-tts/simple_google_tts"
-MESSAGE_FILE = "./welcomeMessages.txt"
+MESSAGE_FILE = "./welcomeRoyalMessages.txt"
 #Info for streaming using ffmpeg
 FFMPEG_PROC = None;
 WIDTH = 1280;
@@ -75,6 +75,7 @@ class FaceWall():
                     print("Detected: {0} , who is not in the list".format(person))
                 continue
             #Do not count for detected person
+            print("Detected: {0} ".format(person))
             if (self.realtimeFaces[person] is None):
                 self.countFaces[person] = self.countFaces[person] + 1
               
@@ -85,19 +86,23 @@ class FaceWall():
         self.renderFaces()
         
     def renderFaces(self):
-        THRESHOLD_FACE_COUNTS = 5
+        print('Entering render faces ...')
+        THRESHOLD_FACE_COUNTS = 3
         elapsedSeconds = int(time.time()-self.start)
         if (elapsedSeconds % 3 != 2):
             self.hasReset = False
         elif ((elapsedSeconds % 3 == 2) and 
                 (not self.hasReset)):
+            print('Reset in renderFaces')
             self.hasReset = True
             person = max(self.countFaces, key = self.countFaces.get)
             if ((self.countFaces[person] > THRESHOLD_FACE_COUNTS) and 
                 (self.realtimeFaces[person] is None)):
                 #First time detected a new person
                 self.realtimeFaces[person] = True #A placeholder for real image
+                print('Sending person to ws 9000 ...')
                 self.wsClient.send(person)
+                print('Sent')
                 self.waitingMessages.append(self.welcomeMessages[person])
            #Reset Counting
             for person in self.countFaces.keys():
@@ -117,7 +122,7 @@ class FaceWall():
                 (self.announcer.poll() is not None))):
                 message = self.waitingMessages.pop(0)
                 self.announcer = sp.Popen([TTS_COMMAND,"no", message], stdin=sp.PIPE, stdout=sp.PIPE)
-        except e:
+        except Exception as e:
             print("Error while running TTS. {0}:{1} ".format(e.errno, e.strerror))
         #Render Facewall
         self.FFMPEG_PROC.stdin.write(self.faceWall.tostring())
