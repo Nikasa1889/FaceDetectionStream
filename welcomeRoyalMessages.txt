@@ -4,4 +4,5 @@
 "Thor Edquist": "Velkommen Thor Edquist. Du har et skikkelig hyggelig fjes",
 "Trond Rønningen": "Velkommen Trond Rønningen, hyggelig at du er her og på tur i fjellet",
 "Knut Johansen": "Velkommen Knut Johansen. Melbu må jo være et paradis å bo på",
-"hieu": "Hello!"}
+"hieu": "Hello!",
+"Davide": "Velkommen"}
