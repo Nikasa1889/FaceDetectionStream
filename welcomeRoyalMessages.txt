@@ -1,3 +1,4 @@
 {"Princess Mette-Marit": "Hey Princess! Har en godt dag",
 "Prince Haakon": "Hey Prince! Velkommen til eSmart Systems?",
-"hieu": "Velkommen, Hvordan hvordan har du det"}
+"hieu": "Velkommen, Hvordan hvordan har du det",
+"lasya": "Velkommen Lasya to eSmart Systems"}
