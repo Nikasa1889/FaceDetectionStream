@@ -4,6 +4,7 @@ Run command to push to git
 from subprocess import Popen, PIPE
 
 
+
 message = "test deploy script"
 
 p = Popen(["git", "pull"])
