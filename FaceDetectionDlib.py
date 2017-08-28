@@ -26,7 +26,10 @@ class FaceDetection():
             if len(face_encodings) > 0:
                 face_encoding = face_encodings[0]
                 self.listOfKnownFaceEncodings.append(face_encoding)
-                self.listOfKnownFaceNames.append(name.split("_")[0])
+                face_name = name.split("_")[0] if "_" in name else name
+                self.listOfKnownFaceNames.append(face_name)
+            else:
+                print("Can not encode this face: {}".format(name))
         # Check consistency between welcome messages and faceExamples
         self.welcomeMessages = []
         with open(MESSAGE_FILE, "r") as f:
@@ -39,7 +42,7 @@ class FaceDetection():
         else:
             print("Names in welcomeMessage but not face examples: {}".format(nameWelcome.difference(nameFace)))
             print("Names in face examples but not in welcomeMessage: {}".format(nameFace.difference(nameWelcome)))
-            raise ValueError('Names in the face example images are not consistent with welcomeMessage file')
+            #  raise ValueError('Names in the face example images are not consistent with welcomeMessage file')
 
     def infer(self, rgbImg, multiple=True):
         start = time.time()
