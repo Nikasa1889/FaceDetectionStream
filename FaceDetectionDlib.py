@@ -42,7 +42,7 @@ class FaceDetection():
         else:
             print("Names in welcomeMessage but not face examples: {}".format(nameWelcome.difference(nameFace)))
             print("Names in face examples but not in welcomeMessage: {}".format(nameFace.difference(nameWelcome)))
-            #  raise ValueError('Names in the face example images are not consistent with welcomeMessage file')
+            raise ValueError('Names in the face example images are not consistent with welcomeMessage file')
 
     def infer(self, rgbImg, multiple=True):
         start = time.time()
