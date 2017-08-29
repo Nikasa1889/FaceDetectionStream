@@ -1,29 +1,53 @@
-<!doctype html>
-<html class="no-js" lang="">
-
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Welcome to eSmart</title>
-  <meta name="description" content="eSmart facedetection frontend">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1">
-  <link rel="stylesheet" type="text/css" href="/style.css">
+<script>
+</script>
+<style media="screen" type="text/css">
+<style>
+.realtimeframe { width: 70%; height: 960px; border: 1px solid black; }
+.realtimeframe {
+height: 480px
+width: 50%
+-ms-zoom: 0.5;
+-moz-transform: scale(0.5);
+-moz-transform-origin: 0 0;
+-o-transform: scale(0.5);
+-o-transform-origin: 0 0;
+-webkit-transform: scale(0.5);
+-webkit-transform-origin: 0 0;
+}
+
+.facewallframe { width: 70%; height: 720px; border: 1px solid black; }
+.facewallframe {
+height: 360px
+width: 50%
+-ms-zoom: 0.5;
+-moz-transform: scale(0.5);
+-moz-transform-origin: 0 0;
+-o-transform: scale(0.5);
+-o-transform-origin: 0 0;
+-webkit-transform: scale(0.5);
+-webkit-transform-origin: 0 0;
+}
+</style>
+
 </head>
 <body>
-  <div id="app"></div>
-  <script>
-  var WebFontConfig = {
-    google: { families: [ 'Roboto:400,300,500:latin' ] }
-  };
-  (function() {
-    var wf = document.createElement('script');
-    wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-    wf.type = 'text/javascript';
-    wf.async = 'true';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(wf, s);
-  })();
-  </script>
-  <script src="/app_royal_demo.js"></script>
+
+<iframe src="http://localhost:8000/video1_720p.mjpg" height="1000" width="1300" frameborder="0" allowfullscreen align="center" scrolling="yes">
+  <p>Real Time Detection</p>
+</iframe>
+
+
+<iframe  src="http://localhost:8000/video2_720p.mjpg" height="800" width="1300" frameborder="0" allowfullscreen align="center" scrolling="yes">
+  <p>FaceWall.</p>
+</iframe>
+
+<iframe src="Notification.html" height="960" width="800" frameborder="0" allowfullscreen align="center" scrolling="no">
+  <p>Notification.</p>
+</iframe>
+
 </body>
 </html>
+
