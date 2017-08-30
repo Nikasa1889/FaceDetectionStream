@@ -3,4 +3,5 @@
 "Arne Jorgen Olafsen": "Takk for at du passer på oss, og vi roboter bidrar gjerne hvis nødvendig",
 "Thor Edquist": "Imponerende at en ordfører tar digitalisering av kommunen til nye høyder",
 "Trond Ronningen": "Det er hyggelig at fylkesmannen også viser så stor interesse for teknologimiljøet i Halden",
-"Knut Johansen": "Der sitter jo Haldens Big Data Scientist"}
+"Knut Johansen": "Der sitter jo Haldens Big Data Scientist",
+"Olav Heian-Engdal": "Vi ser deg. Moro med kunstig intelligens."}
