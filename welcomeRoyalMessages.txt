@@ -1,6 +1,6 @@
-{"Princess Mette-Marit": "Du ser strålende og  opplagt ut Kronprinsesse, håper du er klar for å slå Kronprinsregenten i koding senere i dag",
-"Prince Haakon": "Birken på 3 timer og 58 minutter står det respekt av, kjære Kronprinsregent. Tenker det var god følelse å slå Kronprins Fredrik med 22 minutter",
+{"Princess Mette-Marit": "Du ser strålende og opplagt ut Kronprinsesse, håper du er klar for å slå Kronprinsregenten i koding senere i dag",
+"Prince Haakon": "Birken på 3 timer og 58 minutter står det respekt av, kjære Kronprinsregent. Tenker det var en god følelse å slå Kronprins Fredrik med 22 minutter",
 "Arne Jorgen Olafsen": "Takk for at du passer på oss, og vi roboter bidrar gjerne hvis nødvendig",
 "Thor Edquist": "Imponerende at en ordfører tar digitalisering av kommunen til nye høyder",
-"Trond Ronningen": "Det er hyggelig at fylkesmannen også viser så stor interesse for teknologimiljøet i  Halden",
+"Trond Ronningen": "Det er hyggelig at fylkesmannen også viser så stor interesse for teknologimiljøet i Halden",
 "Knut Johansen": "Der sitter jo Haldens Big Data Scientist"}
