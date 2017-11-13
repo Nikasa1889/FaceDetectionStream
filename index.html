@@ -2,6 +2,14 @@
 <html>
 <head>
 <script>
+var domain = location.protocol+'//'+location.hostname;
+window.onload = function() {
+       //when the document is finished loading, replace everything
+       //between the <a ...> </a> tags with the value of splitText
+   document.getElementById("RealTimeDetection").src=domain+":8000/video1_720p.mjpg"
+
+   document.getElementById("FaceWall").src=domain+":8000/video2_720p.mjpg"
+} 
 </script>
 <style media="screen" type="text/css">
 <style>
@@ -35,16 +43,16 @@ width: 50%
 </head>
 <body>
 
-<iframe src="http://localhost:8000/video1_720p.mjpg" height="1000" width="1300" frameborder="0" allowfullscreen align="center" scrolling="yes">
+<iframe id="RealTimeDetection" src="http://localhost:8000/video1_720p.mjpg" height="1000" width="1300" frameborder="0" allowfullscreen align="center" scrolling="yes">
   <p>Real Time Detection</p>
 </iframe>
 
 
-<iframe  src="http://localhost:8000/video2_720p.mjpg" height="800" width="1300" frameborder="0" allowfullscreen align="center" scrolling="yes">
+<iframe id="FaceWall" src="http://localhost:8000/video2_720p.mjpg" height="800" width="1300" frameborder="0" allowfullscreen align="center" scrolling="yes">
   <p>FaceWall.</p>
 </iframe>
 
-<iframe src="Notification.html" height="960" width="800" frameborder="0" allowfullscreen align="center" scrolling="no">
+<iframe id="Notification" src="Notification.html" height="960" width="800" frameborder="0" allowfullscreen align="center" scrolling="no">
   <p>Notification.</p>
 </iframe>
 
