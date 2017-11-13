@@ -16,7 +16,7 @@ FACE_NCOL = 8
 
 #Info for google-tts command
 TTS_COMMAND = "./simple-google-tts/simple_google_tts"
-MESSAGE_FILE = "./welcomeRoyalMessages.txt"
+MESSAGE_FILE = "./welcomeMessages.txt"
 #Info for streaming using ffmpeg
 FFMPEG_PROC = None;
 WIDTH = 1280;

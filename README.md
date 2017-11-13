@@ -41,5 +41,4 @@ This code runs out of the box on this [preconfigured virtual machine](https://me
 ### How to change faces and welcome messages
   Face examples are stored in ```images/faces```
   Welcome messages are stored in ```./welcomeMessages.txt```
-  You should also update the list of people in ```app.js```, search for "Dang" name may help
-  Names of face examples images, names in welcomeMessages.txt, and names in app.js must match
+  Names of face examples images and names in welcomeMessages.txt must match

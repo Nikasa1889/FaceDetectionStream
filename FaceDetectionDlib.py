@@ -5,7 +5,7 @@ import face_recognition
 import dlib
 # This FaceDetection class use dlib for face detection, face encoding, and face comparision
 UP_SAMPLE = 1
-MESSAGE_FILE = "./welcomeRoyalMessages.txt"
+MESSAGE_FILE = "./welcomeMessages.txt"
 fileDir = os.path.dirname(os.path.realpath(__file__))
 faceDir = os.path.join(fileDir,'images', 'faces')
 valid_images = [".jpg", ".png", ".jpeg"]
