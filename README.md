@@ -18,6 +18,7 @@ This code runs out of the box on this [preconfigured virtual machine](https://me
   sudo pip install websocket-client
   ```
 - Install dependecy to run google text-to-speech service, using this [simple google tts](http://tuxdiary.com/2014/09/29/google-text-to-speech-tts-linux/) project
+- We are using gTTS and pyglet to make announcement. You also need AVbin!
   ```bash
   sudo apt-get install xsel libnotify-bin libttspico0 libttspico-utils libttspico-data libwww-perl libwww-mechanize-perl libhtml-tree-perl sox libsox-fmt-mp3
   ```

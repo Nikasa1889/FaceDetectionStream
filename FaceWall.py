@@ -15,7 +15,7 @@ FACE_NROW = 4
 FACE_NCOL = 8
 
 #Info for google-tts command
-TTS_COMMAND = "./simple-google-tts/simple_google_tts"
+TTS_COMMAND = "python3 ./simple-google-tts/pyglet_gtts.py"
 MESSAGE_FILE = "./welcomeMessages.txt"
 #Info for streaming using ffmpeg
 FFMPEG_PROC = None;
@@ -121,7 +121,7 @@ class FaceWall():
                 ((self.announcer is None) or 
                 (self.announcer.poll() is not None))):
                 message = self.waitingMessages.pop(0)
-                self.announcer = sp.Popen([TTS_COMMAND,"no", message], stdin=sp.PIPE, stdout=sp.PIPE)
+                self.announcer = sp.Popen(['python3', './simple-google-tts/pyglet_gtts.py',"no", message], stdin=sp.PIPE, stdout=sp.PIPE)
         except Exception as e:
             print("Error while running TTS. {0}:{1} ".format(e.errno, e.strerror))
         #Render Facewall
