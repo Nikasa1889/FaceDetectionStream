@@ -26,7 +26,10 @@ class FaceDetection():
             if len(face_encodings) > 0:
                 face_encoding = face_encodings[0]
                 self.listOfKnownFaceEncodings.append(face_encoding)
-                self.listOfKnownFaceNames.append(name.split("_")[0])
+                face_name = name.split("_")[0] if "_" in name else name
+                self.listOfKnownFaceNames.append(face_name)
+            else:
+                print("Can not encode this face: {}".format(name))
         # Check consistency between welcome messages and faceExamples
         self.welcomeMessages = []
         with open(MESSAGE_FILE, "r") as f:

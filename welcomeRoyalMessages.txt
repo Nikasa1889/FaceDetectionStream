@@ -1,3 +1,7 @@
-{"Princess Mette-Marit": "Hey Princess! Har en godt dag",
-"Prince Haakon": "Hey Prince! Velkommen til eSmart Systems?",
-"Otto Rustand": "Velkommen, Hvordan hvordan har du det"}
+{"Princess Mette-Marit": "Du ser strålende og opplagt ut Kronprinsesse, håper du er klar for å slå Kronprinsregenten i koding senere i dag",
+"Prince Haakon": "Birken på 3 timer og 58 minutter står det respekt av, kjære Kronprinsregent. Tenker det var en god følelse å slå Kronprins Fredrik med 22 minutter",
+"Arne Jorgen Olafsen": "Takk for at du passer på oss, og vi roboter bidrar gjerne hvis nødvendig",
+"Thor Edquist": "Imponerende at en ordfører tar digitalisering av kommunen til nye høyder",
+"Trond Ronningen": "Det er hyggelig at fylkesmannen også viser så stor interesse for teknologimiljøet i Halden",
+"Knut Johansen": "Der sitter jo Haldens Big Data Scientist",
+"Olav Heian-Engdal": "Vi ser deg. Moro med kunstig intelligens."}
