@@ -17,12 +17,13 @@ This code runs out of the box on this [preconfigured virtual machine](https://me
   sudo pip install autobahn
   sudo pip install websocket-client
   ```
-- Install dependecy to run google text-to-speech service, using this [simple google tts](http://tuxdiary.com/2014/09/29/google-text-to-speech-tts-linux/) project
-- We are using gTTS and pyglet to make announcement. You also need AVbin!
-  ```bash
-  sudo apt-get install xsel libnotify-bin libttspico0 libttspico-utils libttspico-data libwww-perl libwww-mechanize-perl libhtml-tree-perl sox libsox-fmt-mp3
-  ```
-  use option -p if you want to use pico2wave TTS instead of Google's TTS
+- Install dependecy to run google text-to-speech service, using this [gTTS](https://github.com/pndurette/gTTS) library. To play the mp3 file produced by the gTTS library, we use [pyglet](https://bitbucket.org/pyglet/pyglet/wiki/Home) that uses [AVbin](http://avbin.github.io/AVbin/Download.htmlv) underlying. You can install everything by:
+```bash
+  sudo pip install gtts
+  sudo pip install pyglet
+  curl -L -s https://github.com/downloads/AVbin/AVbin/install-avbin-linux-x86-64-v10 > installAVbin.sh; sudo sh ./installAVbin.sh
+  rm installAVbin.sh
+```
 ### How to run:
   ```bash
   cd $FaceDetectionStream
