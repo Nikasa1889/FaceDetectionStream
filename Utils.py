@@ -31,7 +31,8 @@ def drawBox(rgbImg, bb, person, confidence):
                 (bb.left(), bb.bottom()), (bb.right(), bb.top()),
                 (0, 0, 255),
                 4)
-    text = '{}-{:.2f}'.format(person, confidence)
+    #text = '{}-{:.2f}'.format(person, confidence)
+    text = '{}'.format(person)
     rgbImg = drawText(rgbImg, text, bb.left(), bb.top())
     return rgbImg
 
@@ -110,6 +111,7 @@ def drawMakeUp(rgbImg, reps, persons, confidences, face_landmarks):
         #  draw text
         bb = r[0]
         text = '{}-{:.2f}'.format(person, confidence)
+        #text = '{}'.format(person)
         rgbImg = drawText(rgbImg, text, bb.left(), bb.top())
     return rgbImg
 
